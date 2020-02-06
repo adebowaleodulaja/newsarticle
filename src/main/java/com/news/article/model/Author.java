@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class Author {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int authorID;
     private String name;
     private String email;
