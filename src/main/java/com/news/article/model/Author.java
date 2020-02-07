@@ -15,16 +15,21 @@ public class Author {
     private String email;
     private String vpassword;
     private String phoneNumber;
+    private String maritalStatus;
+    private String dateOfBirth;//dd-mm-yyyy
 
     public Author() {
     }
 
-    public Author(int authorID, String name, String email, String vpassword, String phoneNumber) {
+    public Author(int authorID, String name, String email, String vpassword, String phoneNumber, String maritalStatus, String dateOfBirth) {
         this.authorID = authorID;
         this.name = name;
         this.email = email;
         this.vpassword = vpassword;
         this.phoneNumber = phoneNumber;
+        this.maritalStatus = maritalStatus;
+        this.dateOfBirth = dateOfBirth;
+
     }
 
     public int getAuthorID() {
@@ -67,6 +72,22 @@ public class Author {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
     @Override
     public String toString() {
         return "Author{" +
@@ -75,6 +96,8 @@ public class Author {
                 ", email='" + email + '\'' +
                 ", vpassword='" + vpassword + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", maritalStatus='" + maritalStatus + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
                 '}';
     }
 }

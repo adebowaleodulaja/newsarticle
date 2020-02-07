@@ -12,8 +12,8 @@ public class Article {
     private String content;
     private int published;
 
-    //@ManyToOne(cascade = CascadeType.ALL)
-    //@JoinColumn(name = "authorID")
+    @ManyToOne(targetEntity = Author.class)
+    @JoinColumn(name = "authorID")
     private int authorID;
 
     public Article() {
