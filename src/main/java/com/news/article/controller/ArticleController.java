@@ -106,6 +106,6 @@ public class ArticleController {
         }
 
 
-        return new ResponseEntity<>(article, HttpStatus.CREATED);
+        return new ResponseEntity<>(article, HttpStatus.OK);
     }
 }
