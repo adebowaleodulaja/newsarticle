@@ -1,11 +1,17 @@
 package com.news.article.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import javax.persistence.*;
+import java.util.Set;
+
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class)
 @Entity
+@Table(name = "authors")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Author {
 
     @Id
@@ -17,6 +23,11 @@ public class Author {
     private String phoneNumber;
     private String maritalStatus;
     private String dateOfBirth;//dd-mm-yyyy
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //@Transient
+    private java.util.List<Article> articles;
+
 
     public Author() {
     }
@@ -86,6 +97,14 @@ public class Author {
 
     public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public java.util.List<Article> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(java.util.List<Article> articles) {
+        this.articles = articles;
     }
 
     @Override

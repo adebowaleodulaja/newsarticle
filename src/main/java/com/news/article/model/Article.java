@@ -1,9 +1,15 @@
 package com.news.article.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class Article {
+@Table(name = "articles")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Article implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -12,19 +18,19 @@ public class Article {
     private String content;
     private int published;
 
-    @ManyToOne(targetEntity = Author.class)
-    @JoinColumn(name = "authorID")
-    private int authorID;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "author_id")
+    private Author author;
 
     public Article() {
     }
 
-    public Article(int id, String title, String content, int published, int authorID) {
+    public Article(int id, String title, String content, int published, Author authorID) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.published = published;
-        this.authorID = authorID;
+        this.author = authorID;
     }
 
     public int getId() {
@@ -59,11 +65,21 @@ public class Article {
         this.published = published;
     }
 
-    public int getAuthorID() {
-        return authorID;
+    public Author getAuthor() {
+        return author;
     }
 
-    public void setAuthorID(int authorID) {
-        this.authorID = authorID;
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", published=" + published +
+                '}';
     }
 }
