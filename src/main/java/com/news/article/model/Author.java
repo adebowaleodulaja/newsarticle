@@ -24,7 +24,7 @@ public class Author {
     private String maritalStatus;
     private String dateOfBirth;//dd-mm-yyyy
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     //@Transient
     private java.util.List<Article> articles;
 

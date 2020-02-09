@@ -3,6 +3,7 @@ package com.news.article.controller;
 
 import com.news.article.exception.ArticleNotFoundException;
 import com.news.article.exception.AuthorNotFoundException;
+import com.news.article.exception.InvalidArticleIDException;
 import com.news.article.model.Article;
 import com.news.article.model.Author;
 import com.news.article.repository.ArticleRepository;
@@ -24,18 +25,18 @@ public class ArticleController {
     private ArticleRepository articleRepository;
     private AuthorRepository authorRepository;
 
-    public ArticleController(){
+    public ArticleController() {
 
     }
 
     @Autowired
-    public ArticleController(ArticleRepository articleRepository, AuthorRepository authorRepository){
+    public ArticleController(ArticleRepository articleRepository, AuthorRepository authorRepository) {
         this.articleRepository = articleRepository;
         this.authorRepository = authorRepository;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/newsletter/article")
-    public ResponseEntity<Article> submitArticle(@RequestBody Article article){
+    public ResponseEntity<Article> submitArticle(@RequestBody Article article) {
 
         SecurityContext ctx = SecurityContextHolder.getContext();
         Authentication auth = ctx.getAuthentication();
@@ -48,12 +49,12 @@ public class ArticleController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/newsletter/articles")
-    public List<Article> findAllArticles(){
+    public List<Article> findAllArticles() {
         return articleRepository.findAll();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/newsletter/publishedarticles")
-    public List<Article> findAllPublishedArticles(){
+    public List<Article> findAllPublishedArticles() {
         return articleRepository.findArticleByPublished();
     }
 
@@ -71,11 +72,11 @@ public class ArticleController {
         }
 
         Article article = articleRepository.findById(articleID).get();
-        if (article == null){
+        if (article == null) {
             throw new ArticleNotFoundException("Article not found.");
         }
 
-        if(article.getAuthor().getAuthorID() == author.getAuthorID()){
+        if (article.getAuthor().getAuthorID() == author.getAuthorID()) {
             articleRepository.deleteArticleById(article.getId());
         }
 
@@ -85,7 +86,7 @@ public class ArticleController {
 
     @Transactional
     @RequestMapping(method = RequestMethod.PUT, value = "/api/v1/newsletter/articles/{articleID}")
-    public ResponseEntity<?>  editArticle(@PathVariable int articleID) {
+    public ResponseEntity<?> editArticle(@PathVariable int articleID, @RequestBody Article article) {
 
         SecurityContext ctx = SecurityContextHolder.getContext();
         Authentication auth = ctx.getAuthentication();
@@ -96,16 +97,19 @@ public class ArticleController {
             throw new AuthorNotFoundException("Author with id " + author.getAuthorID() + " not found!");
         }
 
-        Article article = articleRepository.findById(articleID).get();
-        if (article == null){
+         Article article1 = articleRepository.findById(articleID).get();
+        if (article == null) {
             throw new ArticleNotFoundException("Article not found.");
+        } else {
+            if (article1.getAuthor().getAuthorID() == author.getAuthorID()) {
+                article.setId(articleID);
+                article.setAuthor(author);
+                articleRepository.save(article);
+                return new ResponseEntity<>(article, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new InvalidArticleIDException("Invalid Article ID"), HttpStatus.OK);
+            }
         }
 
-        if(article.getAuthor().getAuthorID() == author.getAuthorID()){
-            articleRepository.save(article);
-        }
-
-
-        return new ResponseEntity<>(article, HttpStatus.OK);
     }
 }
