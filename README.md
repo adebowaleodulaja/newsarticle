@@ -1,6 +1,6 @@
 "# newsarticle" 
 
-**New Article API Docummentation**
+**News Article API Docummentation**
 
 **Signup Author**
 ----
