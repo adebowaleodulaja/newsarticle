@@ -326,7 +326,7 @@
 * **Error Response:**
 
   * **Code:** 401 Unauthorized <br />
-    **Content:** `{ error : "Unathurized" }`
+    **Content:** `{ error : "Unauthorized" }`
 
 
 
